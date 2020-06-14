@@ -13,7 +13,9 @@ from PickleMaker import MyPickle
 from SQLDatabase import MyDatabase
 import shlex
 import sys
-
+from file_name_builder_pattern import PyrClassDiaFileNameBuilder
+from file_name_builder_pattern import FileNameDirector
+from file_name_builder_pattern import ValClassContentsFileNameBuilder
 
 class MyCli(Cmd):
     """Command line interpreter for generating UML class diagram"""
@@ -24,7 +26,10 @@ class MyCli(Cmd):
         self.my_name = my_name
         self.prompt = ">>" + my_name + ">> "
         self.file_to_data = FileToData()
-
+        self.pyr_name_builder = PyrClassDiaFileNameBuilder()
+        self.file_name_dir = FileNameDirector(self.pyr_name_builder)
+        self.val_name_builder = ValClassContentsFileNameBuilder()
+        
     # Matt's work
     def do_exit(self):  # delete
         # exit the application.
@@ -202,9 +207,10 @@ class MyCli(Cmd):
         """Generate and display a class diagram in png format from given [png_file_name_suffix py_file_name.py]"""
 
         # sample: >>>>> pyr_class_diagram test test.py
-        self.file_names = file_names
-        python_file_name = file_names[(file_names.find(" ") + 1):]
-        png_file_name = 'classes_' + file_names[0:(file_names.find(" "))] + '.png'
+        self.file_name_dir.set_builder(self.pyr_name_builder)
+        self.file_name_dir.construct_file_name(file_names)
+        python_file_name = self.pyr_name_builder.get_python_file_name()
+        png_file_name = self.pyr_name_builder.get_image_file_name()
         try:
             if path.exists(python_file_name):
                 pyreverse_command = 'pyreverse -ASmn -o png -p ' + file_names
@@ -268,9 +274,11 @@ class MyCli(Cmd):
 
         # sample: >>>>> validate_class_contents test.py
         num_of_classes = 0
-        num_of_functions = 0
-        python_file_name = file_name
-        png_file_name = 'validate_' + file_name.split(".")[0] + '.png'
+        num_of_functions = 0   
+        self.file_name_dir.set_builder(self.val_name_builder)
+        self.file_name_dir.construct_file_name(file_name)
+        python_file_name = self.val_name_builder.get_python_file_name()
+        png_file_name = self.val_name_builder.get_image_file_name()
         try:
             if path.exists(file_name):
                 self.file_to_data.read_file(file_name)
