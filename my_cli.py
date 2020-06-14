@@ -269,6 +269,8 @@ class MyCli(Cmd):
         # sample: >>>>> validate_class_contents test.py
         num_of_classes = 0
         num_of_functions = 0
+        python_file_name = file_name
+        png_file_name = 'validate_' + file_name.split(".")[0] + '.png'
         try:
             if path.exists(file_name):
                 self.file_to_data.read_file(file_name)
@@ -308,6 +310,7 @@ class MyCli(Cmd):
                 plt.xticks(x_pos, types_x)
                 plt.ylabel('Total Numbers')
                 plt.title('Total Numbers of classes and functions')
+                plt.savefig(png_file_name)
                 plt.show()
             else:
                 print("Your given python file does not exist in the current directory ")
