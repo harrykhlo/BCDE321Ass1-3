@@ -11,6 +11,7 @@ from file_name_builder_pattern import FileNameDirector
 from file_to_data import FileToData
 import numpy as np
 
+
 class ImageContext(object):
     def __init__(self, image_strategy):
         self.image_strategy = image_strategy
