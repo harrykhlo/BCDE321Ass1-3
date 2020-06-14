@@ -13,9 +13,9 @@ from PickleMaker import MyPickle
 from SQLDatabase import MyDatabase
 import shlex
 import sys
-from file_name_builder_pattern import PyrClassDiaFileNameBuilder
-from file_name_builder_pattern import FileNameDirector
-from file_name_builder_pattern import ValClassContentsFileNameBuilder
+from create_image_strategy import ImageContext
+from create_image_strategy import ClassImageStrategy
+from create_image_strategy import ValidateImageStrategy
 
 class MyCli(Cmd):
     """Command line interpreter for generating UML class diagram"""
@@ -26,9 +26,6 @@ class MyCli(Cmd):
         self.my_name = my_name
         self.prompt = ">>" + my_name + ">> "
         self.file_to_data = FileToData()
-        self.pyr_name_builder = PyrClassDiaFileNameBuilder()
-        self.file_name_dir = FileNameDirector(self.pyr_name_builder)
-        self.val_name_builder = ValClassContentsFileNameBuilder()
         
     # Matt's work
     def do_exit(self):  # delete
@@ -205,33 +202,10 @@ class MyCli(Cmd):
     # Harry's work
     def do_pyr_class_diagram(self, file_names):
         """Generate and display a class diagram in png format from given [png_file_name_suffix py_file_name.py]"""
-
         # sample: >>>>> pyr_class_diagram test test.py
-        self.file_name_dir.set_builder(self.pyr_name_builder)
-        self.file_name_dir.construct_file_name(file_names)
-        python_file_name = self.pyr_name_builder.get_python_file_name()
-        png_file_name = self.pyr_name_builder.get_image_file_name()
         try:
-            if path.exists(python_file_name):
-                pyreverse_command = 'pyreverse -ASmn -o png -p ' + file_names
-                subprocess.call(pyreverse_command)
-                print(file_names + ' are done')
-
-                if path.exists(png_file_name):
-                    # show png image
-                    img = mpimg.imread(png_file_name)
-                    fig = plt.imshow(img)
-                    fig.axes.get_xaxis().set_visible(False)
-                    fig.axes.get_yaxis().set_visible(False)
-                    plt.show()
-                else:
-                    print("The image of class diagram cannot be generate.")
-                    print("Please check with your system administrators.")
-            else:
-                print("Your given python file does not exist in the current directory "
-                      "or your input arguments were wrong. The input arguments "
-                      "should be [png_file_name_suffix py_file_name.py]. "
-                      "Please try again!")
+            class_image = ImageContext(ClassImageStrategy())
+            class_image.produce_image(file_names)
         except Exception as err:
             print("Please try again! The exception is: ", err)
 
@@ -273,58 +247,9 @@ class MyCli(Cmd):
         Syntax: validate_class_contents [input source code file name.py]"""
 
         # sample: >>>>> validate_class_contents test.py
-        num_of_classes = 0
-        num_of_functions = 0   
-        self.file_name_dir.set_builder(self.val_name_builder)
-        self.file_name_dir.construct_file_name(file_name)
-        python_file_name = self.val_name_builder.get_python_file_name()
-        png_file_name = self.val_name_builder.get_image_file_name()
         try:
-            if path.exists(file_name):
-                self.file_to_data.read_file(file_name)
-                num_of_classes = len(self.file_to_data.tree.body)
-                print("---There are " + str(num_of_classes) + " classes.-------------------")
-                print("-----The classes are: -------------------")
-                for my_class in self.file_to_data.tree.body:
-                    print("-------" + my_class.name + " class")
-                for my_class in self.file_to_data.tree.body:
-                    print("---------The " + my_class.name + " class has " + str(len(my_class.body)) + " functions")
-                    num_of_functions += len(my_class.body)
-                    print("-----------The functions in " + my_class.name + " class are ")
-                    for my_function in my_class.body:
-                        print("---------------" + my_function.name + " function")
-                print("total number of classes is " + str(num_of_classes))
-                print("total number of functions is " + str(num_of_functions))
-                # for my_function in my_class.body:
-                #     if my_function.name == "__init__":
-                #         print("---------The " + my_class.name + " class has " + str(
-                #             len(my_function.body)) + " attributes")
-                #         print("-----------The attributes in " + my_class.name + " class are ")
-                #         for my_attribute in my_function.body:
-                #             print("---------------" + my_attribute.targets[0].attr + " attribute")
-
-                # types_x = ["class", "function"]
-                # num_y = [num_of_classes, num_of_functions]
-                # plt.plot(types_x, num_y, '-b', label="A simple line")
-                # plt.legend(loc='upper left')
-                # plt.title("Total Numbers of classes and functions")
-                # plt.xlabel('Types')
-                # plt.ylabel('Total Numbers')
-                # plt.show()
-                types_x = ["class", "function"]
-                x_pos = np.arange(len(types_x))
-                num_y = [num_of_classes, num_of_functions]
-                plt.bar(x_pos, num_y, align='center', alpha=0.5)
-                plt.xticks(x_pos, types_x)
-                plt.ylabel('Total Numbers')
-                plt.title('Total Numbers of classes and functions')
-                plt.savefig(png_file_name)
-                plt.show()
-            else:
-                print("Your given python file does not exist in the current directory ")
-                print("or your input arguments were wrong. The input arguments ")
-                print("should be [py_file_name.py]. ")
-                print("Please try again!")
+            class_image = ImageContext(ValidateImageStrategy())
+            class_image.produce_image(file_name) 
         except Exception as err:
             print("Please try again! The exception is: ", err)
 
