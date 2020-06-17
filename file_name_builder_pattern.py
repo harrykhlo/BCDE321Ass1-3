@@ -27,7 +27,7 @@ class PyrClassDiaFileNameBuilder(FileNameBuilder):
 
     def create_image_file_name(self, arg_name):
         self.image_file_name = 'classes_' + \
-        arg_name[0:(arg_name.find(" "))] + '.png'
+            arg_name[0:(arg_name.find(" "))] + '.png'
 
 
 class ValClassContentsFileNameBuilder(FileNameBuilder):
@@ -46,9 +46,11 @@ class FileNameDirector(object):
         self.builder = builder
 
     def construct_file_name(self, arg_name):
-                self.builder.create_python_file_name(arg_name)
-                self.builder.create_image_file_name(arg_name)
+        self.builder.create_python_file_name(arg_name)
+        self.builder.create_image_file_name(arg_name)
 
+
+# Below for manual test only
 if __name__ == "__main__":
     arg_name_pyr_class_dia = 'trial test.py'
     arg_name_val_class_contents = 'test.py'

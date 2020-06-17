@@ -201,8 +201,7 @@ class MyCli(Cmd):
 
     # Harry's work
     def do_pyr_class_diagram(self, file_names):
-        """Generate and display a class diagram in png format "
-              "from given [png_file_name_suffix py_file_name.py]"""
+        """Generate and display a class diagram in png format from given [png_file_name_suffix py_file_name.py]"""
         # sample: >>>>> pyr_class_diagram test test.py
         try:
             class_image = ImageContext(ClassImageStrategy())
@@ -242,18 +241,15 @@ class MyCli(Cmd):
 
     # Harry's work
     def do_validate_class_contents(self, file_name):
-        """Validate, list and display class names,
-         function names and the total numbers of them
-         in the given python file. Class and function
-         names are displayed in command line.
-         Total numbers of classes and functions are
-         displayed in a bar graph.
-         Syntax: validate_class_contents [input source code file name.py]"""
+        """Validate, list and display class names, function names and the total numbers of them
+        in the given python file. Class and function names are displayed in command line.
+        Total numbers of classes and functions are displayed in a bar graph.
+        Syntax: validate_class_contents [input source code file name.py]"""
 
         # sample: >>>>> validate_class_contents test.py
         try:
             class_image = ImageContext(ValidateImageStrategy())
-            class_image.produce_image(file_name)
+            class_image.produce_image(file_name) 
         except Exception as err:
             print("Please try again! The exception is: ", err)
 
