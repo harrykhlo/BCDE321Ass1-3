@@ -51,18 +51,18 @@ class FileNameDirector(object):
 
 
 # Below for manual test only
-if __name__ == "__main__":
-    arg_name_pyr_class_dia = 'trial test.py'
-    arg_name_val_class_contents = 'test.py'
+# if __name__ == "__main__":
+    # arg_name_pyr_class_dia = 'trial test.py'
+    # arg_name_val_class_contents = 'test.py'
 
-    pyr_name_builder = PyrClassDiaFileNameBuilder()
-    file_name_dir = FileNameDirector(pyr_name_builder)
-    file_name_dir.construct_file_name(arg_name_pyr_class_dia)
-    print(pyr_name_builder.get_python_file_name())
-    print(pyr_name_builder.get_image_file_name())
+    # pyr_name_builder = PyrClassDiaFileNameBuilder()
+    # file_name_dir = FileNameDirector(pyr_name_builder)
+    # file_name_dir.construct_file_name(arg_name_pyr_class_dia)
+    # print(pyr_name_builder.get_python_file_name())
+    # print(pyr_name_builder.get_image_file_name())
 
-    val_name_builder = ValClassContentsFileNameBuilder()
-    file_name_dir.set_builder(val_name_builder)
-    file_name_dir.construct_file_name(arg_name_val_class_contents)
-    print(val_name_builder.get_python_file_name())
-    print(val_name_builder.get_image_file_name())
+    # val_name_builder = ValClassContentsFileNameBuilder()
+    # file_name_dir.set_builder(val_name_builder)
+    # file_name_dir.construct_file_name(arg_name_val_class_contents)
+    # print(val_name_builder.get_python_file_name())
+    # print(val_name_builder.get_image_file_name())

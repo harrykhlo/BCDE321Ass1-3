@@ -124,11 +124,11 @@ class ValidateImageStrategy(ImageStrategy):
 
 
 # Below for manual test only
-if __name__ == '__main__':
-    file_names_created = "test test.py"
-    class_image = ImageContext(ClassImageStrategy())
-    class_image.produce_image(file_names_created)
+# if __name__ == '__main__':
+    # file_names_created = "test test.py"
+    # class_image = ImageContext(ClassImageStrategy())
+    # class_image.produce_image(file_names_created)
 
-    file_name_created = "test.py"
-    class_image = ImageContext(ValidateImageStrategy())
-    class_image.produce_image(file_name_created)
+    # file_name_created = "test.py"
+    # class_image = ImageContext(ValidateImageStrategy())
+    # class_image.produce_image(file_name_created)

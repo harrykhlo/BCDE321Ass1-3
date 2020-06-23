@@ -23,20 +23,6 @@ class MyCliTestCase(unittest.TestCase):
         comparison = actual_output == expected_output
         equal_arrays = comparison.all()
         self.assertEqual(equal_arrays, True)        
-        
-        
-    # def test_Sample_show_ast_nodes(self):
-        # captured_output = StringIO()  # Create StringIO object
-        # sys.stdout = captured_output  # and redirect stdout.
-        # my_cli = MyCli()
-        # my_cli.help_dot_2_png()
-        # sys.stdout = sys.__stdout__
-        # actual_output = captured_output.getvalue()
-        # expected_output = 'Generate and display png file from the given dot file.\nSyntax: dot_2_png [input dot file name.dot].\n'
-
-        # self.assertEqual(actual_output, expected_output)
-
-
 
 if __name__ == '__main__':
     unittest.main()
